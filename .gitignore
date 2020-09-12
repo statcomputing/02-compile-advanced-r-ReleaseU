@@ -1,3 +1,5 @@
 _book/
 .Rhistory
 .Rproj.user
+gitbook/libs/
+README.md

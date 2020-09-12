@@ -71,4 +71,4 @@ Because I forgot I could catch the screen make the error messages more convincib
 
 For the result, we can get a good version of Html book, but a half-completed pdf book of it.
 
-The book is compiled in the *git_book* folder.
+The book is compiled in the *gitbook* folder.
