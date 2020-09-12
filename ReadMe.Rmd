@@ -67,8 +67,8 @@ But, anyway, we already success to got the *gitbook*, which is good enough to us
 
 \newpage
 # Overall
-Because I forgot I could catch the screen make the error messages more convince, those things was made by hand. Still has reference value on it.
+Because I forgot I could catch the screen make the error messages more convincible, those things was made by hand. Still has reference value on it.
 
 For the result, we can get a good version of Html book, but a half-completed pdf book of it.
 
-The book is compiled in the _book folder which in adv-r folder.
+The book is compiled in the *git_book* folder.
