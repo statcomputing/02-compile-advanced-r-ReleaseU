@@ -1,0 +1,74 @@
+---
+title: "Problems and Solutions to Compile a PDF Version of Advanced R"
+author: "Boyi Zhang"
+output:
+  pdf_document: default
+  html_document: default
+---
+\newpage
+# At the begining
+
+Clone the program (https://github.com/hadley/adv-r). Updating all the package and Software, like Rstudio, Textlive, that I can do. 
+
+\newpage
+# gitbook
+For html book, compiling with the code {bookdown::render_book("index.Rmd", "bookdown::gitbook")"}.
+
+## Reading problems with "contribute.csv"
+There is no specific error reason about it, but some character cannot be distinguished correct when I saw the error message, such as Chinese Character, French Character, etc.
+
+We can leave it later on, just comment it and auto-solved within the Font problem at the same time.
+
+## For missing packages.
+For majority of the packages, you can use {intall.package()} to install package.
+
+## For missing Fonts.
+Font is quiet different, there are two fonts, Inconsolata, AndaleMono, I missed.
+
+Downloads the Opentype file(.otf), put it into latex folder (C:/texlive/2020/texmf-dist/fonts/opentype/public)
+
+Downloads the Truetype file(.ttf), put it into latex folder  (C:/texlive/2020/texmf-dist/fonts/truetype/public)
+
+## Cannot install emo and sloop package from CRAN.
+It is because the package are special sources, we need to install the Rtools40 to install it. Code like this
+
+*devtools::install_github("hadley/emo")*
+
+## in system(cmd) "make" not found
+For this error message, just because install Rtools40 via wizard is not enough, we still should type the code
+
+*writeLines('PATH="\$\{RTOOLS40\_HOME\}\\\\usr\\\\bin;\${PATH}"', con = "~/.Renviron")*
+
+## No such file or directory
+Redirect the folder by Using the following code, It's depends on message content, for me
+
+*sh: c:/Rtools/mingw_64/bin/g++: No such file or directory* 
+
+In this case
+
+*Sys.setenv(BINPREF = "C:/Rtools/mingw$(WIN)/bin/")
+
+Sys.setenv(PATH = paste("C:/Rtools/bin", Sys.getenv("PATH"), sep=";"))*
+
+to redirect.
+
+\newpage
+# pdf_book
+For pdf book, compiling with the code {bookdown::render_book("index.Rmd", "bookdown::pdf_book")"}.
+
+## LaTeX Error: Environment sidebar undefined.
+LaTeX failed to compile _main.tex. See https://yihui.org/tinytex/r/#debugging for debugging tips. See _main.log for more info.
+
+For this error is just because of some deficiency of my textlive software. For this situation, you can find a temp file, which names "_main.tex". 
+
+Compile it with your texlive, compiled with *XeLaTex*, and edit some code, it could get the pdf-version of this book. Actually, don't really know about this method will be worked, just for wishes. Maybe texlive is not enough to have full functional.
+
+But, anyway, we already success to got the *gitbook*, which is good enough to use it by your Browser.
+
+\newpage
+# Overall
+Because I forgot I could catch the screen make the error messages more convince, those things was made by hand. Still has reference value on it.
+
+For the result, we can get a good version of Html book, but a half-completed pdf book of it.
+
+The book is compiled in the _book folder which in adv-r folder.
