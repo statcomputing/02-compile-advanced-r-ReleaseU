@@ -976,8 +976,8 @@ Function operators are used extensively in FP languages like Haskell, and common
 <span id="cb506-2"><a href="function-operators.html#cb506-2"></a>safe_sum</span>
 <span id="cb506-3"><a href="function-operators.html#cb506-3"></a><span class="co">#&gt; function (...) </span></span>
 <span id="cb506-4"><a href="function-operators.html#cb506-4"></a><span class="co">#&gt; capture_error(.f(...), otherwise, quiet)</span></span>
-<span id="cb506-5"><a href="function-operators.html#cb506-5"></a><span class="co">#&gt; &lt;bytecode: 0x0000000018a8eef8&gt;</span></span>
-<span id="cb506-6"><a href="function-operators.html#cb506-6"></a><span class="co">#&gt; &lt;environment: 0x0000000018a97a38&gt;</span></span></code></pre></div>
+<span id="cb506-5"><a href="function-operators.html#cb506-5"></a><span class="co">#&gt; &lt;bytecode: 0x0000000018a77100&gt;</span></span>
+<span id="cb506-6"><a href="function-operators.html#cb506-6"></a><span class="co">#&gt; &lt;environment: 0x0000000018a76c68&gt;</span></span></code></pre></div>
 <p>Like all function operators, <code>safely()</code> takes a function and returns a wrapped function which we can call as usual:</p>
 <div class="sourceCode" id="cb507"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb507-1"><a href="function-operators.html#cb507-1"></a><span class="kw">str</span>(<span class="kw">safe_sum</span>(x[[<span class="dv">1</span>]]))</span>
 <span id="cb507-2"><a href="function-operators.html#cb507-2"></a><span class="co">#&gt; List of 2</span></span>
@@ -1084,7 +1084,7 @@ function when there’s an error.</p></li>
 <span id="cb512-5"><a href="function-operators.html#cb512-5"></a><span class="kw">system.time</span>(<span class="kw">print</span>(<span class="kw">slow_function</span>(<span class="dv">1</span>)))</span>
 <span id="cb512-6"><a href="function-operators.html#cb512-6"></a><span class="co">#&gt; [1] 0.808</span></span>
 <span id="cb512-7"><a href="function-operators.html#cb512-7"></a><span class="co">#&gt; 用户 系统 流逝 </span></span>
-<span id="cb512-8"><a href="function-operators.html#cb512-8"></a><span class="co">#&gt;    0    0    1</span></span>
+<span id="cb512-8"><a href="function-operators.html#cb512-8"></a><span class="co">#&gt; 0.00 0.00 1.02</span></span>
 <span id="cb512-9"><a href="function-operators.html#cb512-9"></a></span>
 <span id="cb512-10"><a href="function-operators.html#cb512-10"></a><span class="kw">system.time</span>(<span class="kw">print</span>(<span class="kw">slow_function</span>(<span class="dv">1</span>)))</span>
 <span id="cb512-11"><a href="function-operators.html#cb512-11"></a><span class="co">#&gt; [1] 8.34</span></span>
@@ -1100,7 +1100,7 @@ function when there’s an error.</p></li>
 <span id="cb513-7"><a href="function-operators.html#cb513-7"></a><span class="kw">system.time</span>(<span class="kw">print</span>(<span class="kw">fast_function</span>(<span class="dv">1</span>)))</span>
 <span id="cb513-8"><a href="function-operators.html#cb513-8"></a><span class="co">#&gt; [1] 6.01</span></span>
 <span id="cb513-9"><a href="function-operators.html#cb513-9"></a><span class="co">#&gt; 用户 系统 流逝 </span></span>
-<span id="cb513-10"><a href="function-operators.html#cb513-10"></a><span class="co">#&gt; 0.01 0.00 0.02</span></span></code></pre></div>
+<span id="cb513-10"><a href="function-operators.html#cb513-10"></a><span class="co">#&gt; 0.02 0.00 0.02</span></span></code></pre></div>
 <p>A relatively realistic use of memoisation is computing the Fibonacci series. The Fibonacci series is defined recursively: the first two values are defined by convention, <span class="math inline">\(f(0) = 0\)</span>, <span class="math inline">\(f(1) = 1\)</span>, and then <span class="math inline">\(f(n) = f(n - 1) + f(n - 2)\)</span> (for any positive integer). A naive version is slow because, for example, <code>fib(10)</code> computes <code>fib(9)</code> and <code>fib(8)</code>, and <code>fib(9)</code> computes <code>fib(8)</code> and <code>fib(7)</code>, and so on.</p>
 <div class="sourceCode" id="cb514"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb514-1"><a href="function-operators.html#cb514-1"></a>fib &lt;-<span class="st"> </span><span class="cf">function</span>(n) {</span>
 <span id="cb514-2"><a href="function-operators.html#cb514-2"></a>  <span class="cf">if</span> (n <span class="op">&lt;</span><span class="st"> </span><span class="dv">2</span>) <span class="kw">return</span>(<span class="dv">1</span>)</span>
@@ -1108,10 +1108,10 @@ function when there’s an error.</p></li>
 <span id="cb514-4"><a href="function-operators.html#cb514-4"></a>}</span>
 <span id="cb514-5"><a href="function-operators.html#cb514-5"></a><span class="kw">system.time</span>(<span class="kw">fib</span>(<span class="dv">23</span>))</span>
 <span id="cb514-6"><a href="function-operators.html#cb514-6"></a><span class="co">#&gt; 用户 系统 流逝 </span></span>
-<span id="cb514-7"><a href="function-operators.html#cb514-7"></a><span class="co">#&gt; 0.03 0.00 0.03</span></span>
+<span id="cb514-7"><a href="function-operators.html#cb514-7"></a><span class="co">#&gt; 0.05 0.00 0.05</span></span>
 <span id="cb514-8"><a href="function-operators.html#cb514-8"></a><span class="kw">system.time</span>(<span class="kw">fib</span>(<span class="dv">24</span>))</span>
 <span id="cb514-9"><a href="function-operators.html#cb514-9"></a><span class="co">#&gt; 用户 系统 流逝 </span></span>
-<span id="cb514-10"><a href="function-operators.html#cb514-10"></a><span class="co">#&gt; 0.06 0.00 0.07</span></span></code></pre></div>
+<span id="cb514-10"><a href="function-operators.html#cb514-10"></a><span class="co">#&gt; 0.06 0.00 0.06</span></span></code></pre></div>
 <p>Memoising <code>fib()</code> makes the implementation much faster because each value is computed only once:</p>
 <div class="sourceCode" id="cb515"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb515-1"><a href="function-operators.html#cb515-1"></a>fib2 &lt;-<span class="st"> </span>memoise<span class="op">::</span><span class="kw">memoise</span>(<span class="cf">function</span>(n) {</span>
 <span id="cb515-2"><a href="function-operators.html#cb515-2"></a>  <span class="cf">if</span> (n <span class="op">&lt;</span><span class="st"> </span><span class="dv">2</span>) <span class="kw">return</span>(<span class="dv">1</span>)</span>
@@ -1177,7 +1177,7 @@ working.</p></li>
 <span id="cb519-12"><a href="function-operators.html#cb519-12"></a><span class="co">#&gt;    0    0    0</span></span>
 <span id="cb519-13"><a href="function-operators.html#cb519-13"></a><span class="kw">system.time</span>(<span class="kw">delay_by</span>(runif, <span class="fl">0.1</span>)(<span class="dv">100</span>))</span>
 <span id="cb519-14"><a href="function-operators.html#cb519-14"></a><span class="co">#&gt; 用户 系统 流逝 </span></span>
-<span id="cb519-15"><a href="function-operators.html#cb519-15"></a><span class="co">#&gt; 0.00 0.00 0.09</span></span></code></pre></div>
+<span id="cb519-15"><a href="function-operators.html#cb519-15"></a><span class="co">#&gt;  0.0  0.0  0.1</span></span></code></pre></div>
 <p>And we can use it with the original <code>walk2()</code>:</p>
 <div class="sourceCode" id="cb520"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb520-1"><a href="function-operators.html#cb520-1"></a><span class="kw">walk2</span>(urls, path, <span class="kw">delay_by</span>(download.file, <span class="fl">0.1</span>), <span class="dt">quiet =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
 <p>Creating a function to display the occasional dot is a little harder, because we can no longer rely on the index from the loop. We could pass the index along as another argument, but that breaks encapsulation: a concern of the progress function now becomes a problem that the higher level wrapper needs to handle. Instead, we’ll use another function factory trick (from Section <a href="function-factories.html#stateful-funs">10.2.4</a>), so that the progress wrapper can manage its own internal counter:</p>

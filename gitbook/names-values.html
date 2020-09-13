@@ -981,9 +981,9 @@ a name.</p></li>
 <p>You might have noticed that the value <code>c(1, 2, 3)</code> has a label: <code>0x74b</code>. While the vector doesn’t have a name, I’ll occasionally need to refer to an object independent of its bindings. To make that possible, I’ll label values with a unique identifier. These identifiers have a special form that looks like the object’s memory “address”, i.e. the location in memory where the object is stored. But because the actual memory addresses changes every time the code is run, we use these identifiers instead.</p>
 <p>You can access an object’s identifier with <code>lobstr::obj_addr()</code>. Doing so allows you to see that both <code>x</code> and <code>y</code> point to the same identifier:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="names-values.html#cb8-1"></a><span class="kw">obj_addr</span>(x)</span>
-<span id="cb8-2"><a href="names-values.html#cb8-2"></a><span class="co">#&gt; [1] &quot;0x176bf488&quot;</span></span>
+<span id="cb8-2"><a href="names-values.html#cb8-2"></a><span class="co">#&gt; [1] &quot;0x17e9f388&quot;</span></span>
 <span id="cb8-3"><a href="names-values.html#cb8-3"></a><span class="kw">obj_addr</span>(y)</span>
-<span id="cb8-4"><a href="names-values.html#cb8-4"></a><span class="co">#&gt; [1] &quot;0x176bf488&quot;</span></span></code></pre></div>
+<span id="cb8-4"><a href="names-values.html#cb8-4"></a><span class="co">#&gt; [1] &quot;0x17e9f388&quot;</span></span></code></pre></div>
 <p>These identifiers are long, and change every time you restart R.</p>
 <p>It can take some time to get your head around the distinction between names and values, but understanding this is really helpful in functional programming where functions can have different names in different contexts.</p>
 <div id="non-syntactic" class="section level3">
@@ -1077,7 +1077,7 @@ not a syntactic name? Read <code>?make.names</code> for the full details.</p></l
 <span id="cb17-4"><a href="names-values.html#cb17-4"></a></span>
 <span id="cb17-5"><a href="names-values.html#cb17-5"></a>x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)</span>
 <span id="cb17-6"><a href="names-values.html#cb17-6"></a><span class="kw">cat</span>(<span class="kw">tracemem</span>(x), <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</span>
-<span id="cb17-7"><a href="names-values.html#cb17-7"></a><span class="co">#&gt; &lt;00000000176DF978&gt;</span></span>
+<span id="cb17-7"><a href="names-values.html#cb17-7"></a><span class="co">#&gt; &lt;0000000017EBF878&gt;</span></span>
 <span id="cb17-8"><a href="names-values.html#cb17-8"></a></span>
 <span id="cb17-9"><a href="names-values.html#cb17-9"></a>z &lt;-<span class="st"> </span><span class="kw">f</span>(x)</span>
 <span id="cb17-10"><a href="names-values.html#cb17-10"></a><span class="co"># there&#39;s no copy here!</span></span>
@@ -1105,15 +1105,15 @@ not a syntactic name? Read <code>?make.names</code> for the full details.</p></l
 <p>Like vectors, lists use copy-on-modify behaviour; the original list is left unchanged, and R creates a modified copy. This, however, is a <strong>shallow</strong> copy: the list object and its bindings are copied, but the values pointed to by the bindings are not. The opposite of a shallow copy is a deep copy where the contents of every reference are copied. Prior to R 3.1.0, copies were always deep copies.</p>
 <p>To see values that are shared across lists, use <code>lobstr::ref()</code>. <code>ref()</code> prints the memory address of each object, along with a local ID so that you can easily cross-reference shared components.</p>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="names-values.html#cb21-1"></a><span class="kw">ref</span>(l1, l2)</span>
-<span id="cb21-2"><a href="names-values.html#cb21-2"></a><span class="co">#&gt; o [1:0x18814ab0] &lt;list&gt; </span></span>
-<span id="cb21-3"><a href="names-values.html#cb21-3"></a><span class="co">#&gt; +-[2:0x186e23c0] &lt;dbl&gt; </span></span>
-<span id="cb21-4"><a href="names-values.html#cb21-4"></a><span class="co">#&gt; +-[3:0x186e2388] &lt;dbl&gt; </span></span>
-<span id="cb21-5"><a href="names-values.html#cb21-5"></a><span class="co">#&gt; \-[4:0x186fc230] &lt;dbl&gt; </span></span>
+<span id="cb21-2"><a href="names-values.html#cb21-2"></a><span class="co">#&gt; o [1:0x125db4f8] &lt;list&gt; </span></span>
+<span id="cb21-3"><a href="names-values.html#cb21-3"></a><span class="co">#&gt; +-[2:0x124c2980] &lt;dbl&gt; </span></span>
+<span id="cb21-4"><a href="names-values.html#cb21-4"></a><span class="co">#&gt; +-[3:0x124c2948] &lt;dbl&gt; </span></span>
+<span id="cb21-5"><a href="names-values.html#cb21-5"></a><span class="co">#&gt; \-[4:0x124c2910] &lt;dbl&gt; </span></span>
 <span id="cb21-6"><a href="names-values.html#cb21-6"></a><span class="co">#&gt;  </span></span>
-<span id="cb21-7"><a href="names-values.html#cb21-7"></a><span class="co">#&gt; o [5:0x19029610] &lt;list&gt; </span></span>
-<span id="cb21-8"><a href="names-values.html#cb21-8"></a><span class="co">#&gt; +-[2:0x186e23c0] </span></span>
-<span id="cb21-9"><a href="names-values.html#cb21-9"></a><span class="co">#&gt; +-[3:0x186e2388] </span></span>
-<span id="cb21-10"><a href="names-values.html#cb21-10"></a><span class="co">#&gt; \-[6:0x18fac500] &lt;dbl&gt;</span></span></code></pre></div>
+<span id="cb21-7"><a href="names-values.html#cb21-7"></a><span class="co">#&gt; o [5:0x19010440] &lt;list&gt; </span></span>
+<span id="cb21-8"><a href="names-values.html#cb21-8"></a><span class="co">#&gt; +-[2:0x124c2980] </span></span>
+<span id="cb21-9"><a href="names-values.html#cb21-9"></a><span class="co">#&gt; +-[3:0x124c2948] </span></span>
+<span id="cb21-10"><a href="names-values.html#cb21-10"></a><span class="co">#&gt; \-[6:0x18f92fc8] &lt;dbl&gt;</span></span></code></pre></div>
 </div>
 <div id="df-modify" class="section level3">
 <h3><span class="header-section-number">2.3.4</span> Data frames</h3>
@@ -1139,11 +1139,11 @@ not a syntactic name? Read <code>?make.names</code> for the full details.</p></l
 <p><img src="diagrams/name-value/character-2.png" width="250" style="display: block; margin: auto;" /></p>
 <p>You can request that <code>ref()</code> show these references by setting the <code>character</code> argument to <code>TRUE</code>:</p>
 <div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="names-values.html#cb26-1"></a><span class="kw">ref</span>(x, <span class="dt">character =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb26-2"><a href="names-values.html#cb26-2"></a><span class="co">#&gt; o [1:0x191d81e0] &lt;chr&gt; </span></span>
+<span id="cb26-2"><a href="names-values.html#cb26-2"></a><span class="co">#&gt; o [1:0x191c0f30] &lt;chr&gt; </span></span>
 <span id="cb26-3"><a href="names-values.html#cb26-3"></a><span class="co">#&gt; +-[2:0x12f37678] &lt;string: &quot;a&quot;&gt; </span></span>
 <span id="cb26-4"><a href="names-values.html#cb26-4"></a><span class="co">#&gt; +-[2:0x12f37678] </span></span>
-<span id="cb26-5"><a href="names-values.html#cb26-5"></a><span class="co">#&gt; +-[3:0x19007298] &lt;string: &quot;abc&quot;&gt; </span></span>
-<span id="cb26-6"><a href="names-values.html#cb26-6"></a><span class="co">#&gt; \-[4:0x13133868] &lt;string: &quot;d&quot;&gt;</span></span></code></pre></div>
+<span id="cb26-5"><a href="names-values.html#cb26-5"></a><span class="co">#&gt; +-[3:0x18fedbd8] &lt;string: &quot;abc&quot;&gt; </span></span>
+<span id="cb26-6"><a href="names-values.html#cb26-6"></a><span class="co">#&gt; \-[4:0x13133840] &lt;string: &quot;d&quot;&gt;</span></span></code></pre></div>
 <p>This has a profound impact on the amount of memory a character vector uses but is otherwise generally unimportant, so elsewhere in the book I’ll draw character vectors as if the strings lived inside a vector.</p>
 </div>
 <div id="exercises-1" class="section level3">
@@ -1333,8 +1333,8 @@ Let’s explore the subtleties with a case study using for loops. For loops have
 <span id="cb46-2"><a href="names-values.html#cb46-2"></a>e<span class="op">$</span>self &lt;-<span class="st"> </span>e</span>
 <span id="cb46-3"><a href="names-values.html#cb46-3"></a></span>
 <span id="cb46-4"><a href="names-values.html#cb46-4"></a><span class="kw">ref</span>(e)</span>
-<span id="cb46-5"><a href="names-values.html#cb46-5"></a><span class="co">#&gt; o [1:0x13a118d0] &lt;env&gt; </span></span>
-<span id="cb46-6"><a href="names-values.html#cb46-6"></a><span class="co">#&gt; \-self = [1:0x13a118d0]</span></span></code></pre></div>
+<span id="cb46-5"><a href="names-values.html#cb46-5"></a><span class="co">#&gt; o [1:0x13a00358] &lt;env&gt; </span></span>
+<span id="cb46-6"><a href="names-values.html#cb46-6"></a><span class="co">#&gt; \-self = [1:0x13a00358]</span></span></code></pre></div>
 <p><img src="diagrams/name-value/e-self.png" width="142" style="display: block; margin: auto;" /></p>
 <p>This is a unique property of environments!</p>
 </div>
@@ -1370,11 +1370,11 @@ performance change as the number of columns increase?</p></li>
 You can force garbage collection by calling <code>gc()</code>. But despite what you might have read elsewhere, there’s never any <em>need</em> to call <code>gc()</code> yourself. The only reasons you might <em>want</em> to call <code>gc()</code> is to ask R to return memory to your operating system so other programs can use it, or for the side-effect that tells you how much memory is currently being used:</p>
 <div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="names-values.html#cb51-1"></a><span class="kw">gc</span>() </span>
 <span id="cb51-2"><a href="names-values.html#cb51-2"></a><span class="co">#&gt;           used (Mb) gc trigger  (Mb) max used  (Mb)</span></span>
-<span id="cb51-3"><a href="names-values.html#cb51-3"></a><span class="co">#&gt; Ncells  734931 39.3    1193908  63.8  1193908  63.8</span></span>
-<span id="cb51-4"><a href="names-values.html#cb51-4"></a><span class="co">#&gt; Vcells 4741916 36.2   17087886 130.4 17082687 130.4</span></span></code></pre></div>
+<span id="cb51-3"><a href="names-values.html#cb51-3"></a><span class="co">#&gt; Ncells  734805 39.3    1193568  63.8  1193568  63.8</span></span>
+<span id="cb51-4"><a href="names-values.html#cb51-4"></a><span class="co">#&gt; Vcells 4741960 36.2   17087950 130.4 17082699 130.4</span></span></code></pre></div>
 <p><code>lobstr::mem_used()</code> is a wrapper around <code>gc()</code> that prints the total number of bytes used:</p>
 <div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="names-values.html#cb52-1"></a><span class="kw">mem_used</span>()</span>
-<span id="cb52-2"><a href="names-values.html#cb52-2"></a><span class="co">#&gt; 79,089,920 B</span></span></code></pre></div>
+<span id="cb52-2"><a href="names-values.html#cb52-2"></a><span class="co">#&gt; 79,083,216 B</span></span></code></pre></div>
 <p>This number won’t agree with the amount of memory reported by your operating system. There are three reasons:</p>
 <ol style="list-style-type: decimal">
 <li><p>It includes objects created by R but not by the R interpreter.</p></li>

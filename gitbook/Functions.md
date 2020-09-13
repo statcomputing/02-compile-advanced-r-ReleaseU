@@ -139,8 +139,7 @@ environment(f02)
 
 I'll draw functions as in the following diagram. The black dot on the left is the environment. The two blocks to the right are the function arguments. I won't draw the body, because it's usually large, and doesn't help you understand the shape of the function.
 
-
-\begin{center}\includegraphics[width=1.23in]{diagrams/functions/components} \end{center}
+<img src="diagrams/functions/components.png" width="118" style="display: block; margin: auto;" />
 
 Like all objects in R, functions can also possess any number of additional `attributes()`. One attribute used by base R is `srcref`, short for source reference. It points to the source code used to create the function. The `srcref` is used for printing because, unlike `body()`, it contains code comments and other formatting.  
 
@@ -207,8 +206,7 @@ f01 <- function(x) {
 }
 ```
 
-
-\begin{center}\includegraphics[width=1.62in]{diagrams/functions/first-class} \end{center}
+<img src="diagrams/functions/first-class.png" width="156" style="display: block; margin: auto;" />
 
 While you almost always create a function and then bind it to a name, the binding step is not compulsory. If you choose not to give a function a name, you get an __anonymous function__. This is useful when it's not worth the effort to figure out a name:
 
@@ -840,7 +838,7 @@ Because of lazy evaluation, you don't need to worry about unnecessary computatio
       print(x)
     }
     show_time()
-    #> [1] "2020-09-08 07:07:14 CST"
+    #> [1] "2020-09-13 07:48:43 CST"
     ```
 
 1.  How many arguments are required when calling `library()`?
@@ -972,9 +970,7 @@ Using `...` comes with two downsides:
     plot(1:10, col = "red", pch = 20, xlab = "x", col.lab = "blue")
     ```
     
-    
-    
-    \begin{center}\includegraphics[width=0.7\linewidth]{Functions_files/figure-latex/unnamed-chunk-58-1} \end{center}
+    <img src="Functions_files/figure-html/unnamed-chunk-58-1.png" width="70%" style="display: block; margin: auto;" />
     
 1.  Why does `plot(1:10, col = "red")` only colour the points, not the axes 
     or labels? Read the source code of `plot.default()` to find out.
@@ -1159,7 +1155,7 @@ with_dir <- function(dir, code) {
 }
 
 getwd()
-#> [1] "C:/Users/12043/adv-r"
+#> [1] "C:/Users/12043/Desktop/computing/Hw2/adv-r"
 with_dir("~", getwd())
 #> [1] "C:/Users/12043/Documents"
 ```
@@ -1223,8 +1219,8 @@ j09()
     }
     capture.output2(cat("a", "b", "c", sep = "\n"))
     #> Warning in file.remove(temp): 无法删除文件'C:
-    #> \Users\12043\AppData\Local\Temp\RtmpaodtlH\file7a8570f32bf'，原因
-    #> 是'Permission denied'
+    #> \Users\12043\AppData\Local\Temp\Rtmp4YsJua\file1c0414151316'，原因是'Permission
+    #> denied'
     #> [1] "a" "b" "c"
     ```
 
@@ -1291,8 +1287,8 @@ Suprisingly, in R, `for` can be called like a regular function! The same is true
   }
 }
 replicate(50, (1 + 2))
-#>  [1] 3 3 3 3 3 3 3 3 3 3 3 3 4 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3
-#> [33] 3 3 3 3 3 3 4 3 4 3 3 3 3 4 3 3 3 3
+#>  [1] 3 3 3 3 3 3 3 3 3 3 3 3 4 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3
+#> [39] 4 3 4 3 3 3 3 4 3 3 3 3
 rm("(")
 ```
 

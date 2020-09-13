@@ -19,6 +19,12 @@ There is no specific error reason about it, but some character cannot be disting
 
 We can leave it later on, just comment it and auto-solved within the Font problem at the same time.
 
+UPDATE: The reason is just because the encoding problem. Make a encode parameter in the line 224 of *Introduction.Rmd*, like this:
+
+contributors <- read.csv("contributors.csv", stringsAsFactors = FALSE, encoding = "UTF-8")
+
+
+
 ## For missing packages.
 For majority of the packages, you can use {intall.package()} to install package.
 

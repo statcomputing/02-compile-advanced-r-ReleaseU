@@ -392,9 +392,9 @@ with_html(
     img(src = "myimg.png", width = 100, height = 100)
   )
 )
-#> <HTML> <body><h1 id='first'>A heading</h1><p>Some text
-#> &amp;<b>some bold text.</b></p><img src='myimg.png'
-#> width='100' height='100' /></body>
+#> <HTML> <body><h1 id='first'>A heading</h1><p>Some text &amp;<b>some
+#> bold text.</b></p><img src='myimg.png' width='100' height='100'
+#> /></body>
 ```
 
 If you want to access the R function overridden by an HTML tag with the same name inside `with_html()`, you can use the full `package::function` specification.
@@ -770,7 +770,7 @@ unknown_op("foo")
 #>     contents <- paste(..., collapse = ", ")
 #>     paste0("\\mathrm{foo}(", contents, ")")
 #> }
-#> <environment: 0x0000000019672780>
+#> <environment: 0x0000000019e36d98>
 ```
 
 And again we update `latex_env()`:

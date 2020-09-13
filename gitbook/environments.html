@@ -976,10 +976,10 @@ environments are useful data structures for solving other problems.</p></li>
 <p><img src="diagrams/environments/loop.png" width="293" style="display: block; margin: auto;" /></p>
 <p>Printing an environment just displays its memory address, which is not terribly useful:</p>
 <div class="sourceCode" id="cb284"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb284-1"><a href="environments.html#cb284-1"></a>e1</span>
-<span id="cb284-2"><a href="environments.html#cb284-2"></a><span class="co">#&gt; &lt;environment: 0x0000000018182140&gt;</span></span></code></pre></div>
+<span id="cb284-2"><a href="environments.html#cb284-2"></a><span class="co">#&gt; &lt;environment: 0x000000001798e488&gt;</span></span></code></pre></div>
 <p>Instead, we’ll use <code>env_print()</code> which gives us a little more information:</p>
 <div class="sourceCode" id="cb285"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb285-1"><a href="environments.html#cb285-1"></a><span class="kw">env_print</span>(e1)</span>
-<span id="cb285-2"><a href="environments.html#cb285-2"></a><span class="co">#&gt; &lt;environment: 0000000018182140&gt;</span></span>
+<span id="cb285-2"><a href="environments.html#cb285-2"></a><span class="co">#&gt; &lt;environment: 000000001798E488&gt;</span></span>
 <span id="cb285-3"><a href="environments.html#cb285-3"></a><span class="co">#&gt; parent: &lt;environment: global&gt;</span></span>
 <span id="cb285-4"><a href="environments.html#cb285-4"></a><span class="co">#&gt; bindings:</span></span>
 <span id="cb285-5"><a href="environments.html#cb285-5"></a><span class="co">#&gt;  * a: &lt;lgl&gt;</span></span>
@@ -1019,7 +1019,7 @@ environments are useful data structures for solving other problems.</p></li>
 <p>To save space, I typically won’t draw all the ancestors; just remember whenever you see a pale blue circle, there’s a parent environment somewhere.</p>
 <p>You can find the parent of an environment with <code>env_parent()</code>:</p>
 <div class="sourceCode" id="cb289"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb289-1"><a href="environments.html#cb289-1"></a><span class="kw">env_parent</span>(e2b)</span>
-<span id="cb289-2"><a href="environments.html#cb289-2"></a><span class="co">#&gt; &lt;environment: 0x000000001519ab98&gt;</span></span>
+<span id="cb289-2"><a href="environments.html#cb289-2"></a><span class="co">#&gt; &lt;environment: 0x00000000149b4998&gt;</span></span>
 <span id="cb289-3"><a href="environments.html#cb289-3"></a><span class="kw">env_parent</span>(e2a)</span>
 <span id="cb289-4"><a href="environments.html#cb289-4"></a><span class="co">#&gt; &lt;environment: R_GlobalEnv&gt;</span></span></code></pre></div>
 <p>Only one environment doesn’t have a parent: the <strong>empty</strong> environment. I draw the empty environment with a hollow parent environment, and where space allows I’ll label it with <code>R_EmptyEnv</code>, the name R uses.</p>
@@ -1028,14 +1028,14 @@ environments are useful data structures for solving other problems.</p></li>
 <p><img src="diagrams/environments/parents-empty.png" width="359" style="display: block; margin: auto;" /></p>
 <p>The ancestors of every environment eventually terminate with the empty environment. You can see all ancestors with <code>env_parents()</code>:</p>
 <div class="sourceCode" id="cb291"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb291-1"><a href="environments.html#cb291-1"></a><span class="kw">env_parents</span>(e2b)</span>
-<span id="cb291-2"><a href="environments.html#cb291-2"></a><span class="co">#&gt; [[1]]   &lt;env: 000000001519AB98&gt;</span></span>
+<span id="cb291-2"><a href="environments.html#cb291-2"></a><span class="co">#&gt; [[1]]   &lt;env: 00000000149B4998&gt;</span></span>
 <span id="cb291-3"><a href="environments.html#cb291-3"></a><span class="co">#&gt; [[2]] $ &lt;env: global&gt;</span></span>
 <span id="cb291-4"><a href="environments.html#cb291-4"></a><span class="kw">env_parents</span>(e2d)</span>
-<span id="cb291-5"><a href="environments.html#cb291-5"></a><span class="co">#&gt; [[1]]   &lt;env: 0000000018524218&gt;</span></span>
+<span id="cb291-5"><a href="environments.html#cb291-5"></a><span class="co">#&gt; [[1]]   &lt;env: 0000000017D81E80&gt;</span></span>
 <span id="cb291-6"><a href="environments.html#cb291-6"></a><span class="co">#&gt; [[2]] $ &lt;env: empty&gt;</span></span></code></pre></div>
 <p>By default, <code>env_parents()</code> stops when it gets to the global environment. This is useful because the ancestors of the global environment include every attached package, which you can see if you override the default behaviour as below. We’ll come back to these environments in Section <a href="environments.html#search-path">7.4.1</a>.</p>
 <div class="sourceCode" id="cb292"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb292-1"><a href="environments.html#cb292-1"></a><span class="kw">env_parents</span>(e2b, <span class="dt">last =</span> <span class="kw">empty_env</span>())</span>
-<span id="cb292-2"><a href="environments.html#cb292-2"></a><span class="co">#&gt;  [[1]]   &lt;env: 000000001519AB98&gt;</span></span>
+<span id="cb292-2"><a href="environments.html#cb292-2"></a><span class="co">#&gt;  [[1]]   &lt;env: 00000000149B4998&gt;</span></span>
 <span id="cb292-3"><a href="environments.html#cb292-3"></a><span class="co">#&gt;  [[2]] $ &lt;env: global&gt;</span></span>
 <span id="cb292-4"><a href="environments.html#cb292-4"></a><span class="co">#&gt;  [[3]] $ &lt;env: package:rlang&gt;</span></span>
 <span id="cb292-5"><a href="environments.html#cb292-5"></a><span class="co">#&gt;  [[4]] $ &lt;env: package:stats&gt;</span></span>
@@ -1355,7 +1355,7 @@ with <code>base_env()</code>.</p></li>
 <span id="cb313-2"><a href="environments.html#cb313-2"></a><span class="co">#&gt; function (x, na.rm = FALSE) </span></span>
 <span id="cb313-3"><a href="environments.html#cb313-3"></a><span class="co">#&gt; sqrt(var(if (is.vector(x) || is.factor(x)) x else as.double(x), </span></span>
 <span id="cb313-4"><a href="environments.html#cb313-4"></a><span class="co">#&gt;     na.rm = na.rm))</span></span>
-<span id="cb313-5"><a href="environments.html#cb313-5"></a><span class="co">#&gt; &lt;bytecode: 0x0000000015d63328&gt;</span></span>
+<span id="cb313-5"><a href="environments.html#cb313-5"></a><span class="co">#&gt; &lt;bytecode: 0x0000000018536a48&gt;</span></span>
 <span id="cb313-6"><a href="environments.html#cb313-6"></a><span class="co">#&gt; &lt;environment: namespace:stats&gt;</span></span></code></pre></div>
 <p><code>sd()</code> is defined in terms of <code>var()</code>, so you might worry that the result of <code>sd()</code> would be affected by any function called <code>var()</code> either in the global environment, or in one of the other attached packages. R avoids this problem by taking advantage of the function versus binding environment described above. Every function in a package is associated with a pair of environments: the package environment, which you learned about earlier, and the <strong>namespace</strong> environment.</p>
 <ul>
@@ -1433,7 +1433,7 @@ Figure 7.1: The execution environment of a simple function call. Note that the p
 <span id="cb317-5"><a href="environments.html#cb317-5"></a></span>
 <span id="cb317-6"><a href="environments.html#cb317-6"></a>e &lt;-<span class="st"> </span><span class="kw">h2</span>(<span class="dt">x =</span> <span class="dv">10</span>)</span>
 <span id="cb317-7"><a href="environments.html#cb317-7"></a><span class="kw">env_print</span>(e)</span>
-<span id="cb317-8"><a href="environments.html#cb317-8"></a><span class="co">#&gt; &lt;environment: 0000000019235248&gt;</span></span>
+<span id="cb317-8"><a href="environments.html#cb317-8"></a><span class="co">#&gt; &lt;environment: 00000000188C9320&gt;</span></span>
 <span id="cb317-9"><a href="environments.html#cb317-9"></a><span class="co">#&gt; parent: &lt;environment: global&gt;</span></span>
 <span id="cb317-10"><a href="environments.html#cb317-10"></a><span class="co">#&gt; bindings:</span></span>
 <span id="cb317-11"><a href="environments.html#cb317-11"></a><span class="co">#&gt;  * a: &lt;dbl&gt;</span></span>
@@ -1449,7 +1449,7 @@ Figure 7.1: The execution environment of a simple function call. Note that the p
 <span id="cb318-5"><a href="environments.html#cb318-5"></a>plus_one &lt;-<span class="st"> </span><span class="kw">plus</span>(<span class="dv">1</span>)</span>
 <span id="cb318-6"><a href="environments.html#cb318-6"></a>plus_one</span>
 <span id="cb318-7"><a href="environments.html#cb318-7"></a><span class="co">#&gt; function(y) x + y</span></span>
-<span id="cb318-8"><a href="environments.html#cb318-8"></a><span class="co">#&gt; &lt;environment: 0x0000000015ea8d10&gt;</span></span></code></pre></div>
+<span id="cb318-8"><a href="environments.html#cb318-8"></a><span class="co">#&gt; &lt;environment: 0x00000000156c3c58&gt;</span></span></code></pre></div>
 <p><img src="diagrams/environments/closure.png" width="203" style="display: block; margin: auto;" /></p>
 <p>What happens when we call <code>plus_one()</code>? Its execution environment will have the captured execution environment of <code>plus()</code> as its parent:</p>
 <div class="sourceCode" id="cb319"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb319-1"><a href="environments.html#cb319-1"></a><span class="kw">plus_one</span>(<span class="dv">2</span>)</span>

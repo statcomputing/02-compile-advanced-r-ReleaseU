@@ -1076,8 +1076,8 @@ surprising? Read the source code of <code>rm()</code> to figure out what’s goi
 <span id="cb978-6"><a href="perf-measure.html#cb978-6"></a><span class="co">#&gt; # A tibble: 2 x 6</span></span>
 <span id="cb978-7"><a href="perf-measure.html#cb978-7"></a><span class="co">#&gt;   expression      min   median `itr/sec` mem_alloc `gc/sec`</span></span>
 <span id="cb978-8"><a href="perf-measure.html#cb978-8"></a><span class="co">#&gt;   &lt;bch:expr&gt; &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt; &lt;bch:byt&gt;    &lt;dbl&gt;</span></span>
-<span id="cb978-9"><a href="perf-measure.html#cb978-9"></a><span class="co">#&gt; 1 sqrt(x)       800ns    900ns   834474.      848B        0</span></span>
-<span id="cb978-10"><a href="perf-measure.html#cb978-10"></a><span class="co">#&gt; 2 x^0.5         4.5us    4.8us   203312.      848B        0</span></span></code></pre></div>
+<span id="cb978-9"><a href="perf-measure.html#cb978-9"></a><span class="co">#&gt; 1 sqrt(x)       800ns    900ns   985756.      848B        0</span></span>
+<span id="cb978-10"><a href="perf-measure.html#cb978-10"></a><span class="co">#&gt; 2 x^0.5         4.5us    4.7us   193576.      848B        0</span></span></code></pre></div>
 <p>By default, <code>bench::mark()</code> runs each expression at least once (<code>min_iterations = 1</code>), and at most enough times to take 0.5 s (<code>min_time = 0.5</code>). It checks that each run returns the same value which is typically what you want microbenchmarking; if you want to compare the speed of expressions that return different values, set <code>check = FALSE</code>.</p>
 <div id="benchmark-results" class="section level3">
 <h3><span class="header-section-number">23.3.1</span> <code>bench::mark()</code> results</h3>
@@ -1112,8 +1112,8 @@ raw underlying data.</p></li>
 <span id="cb980-2"><a href="perf-measure.html#cb980-2"></a><span class="co">#&gt; # A tibble: 2 x 4</span></span>
 <span id="cb980-3"><a href="perf-measure.html#cb980-3"></a><span class="co">#&gt;   expression      min   median `itr/sec`</span></span>
 <span id="cb980-4"><a href="perf-measure.html#cb980-4"></a><span class="co">#&gt;   &lt;bch:expr&gt; &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt;</span></span>
-<span id="cb980-5"><a href="perf-measure.html#cb980-5"></a><span class="co">#&gt; 1 sqrt(x)       800ns    900ns   834474.</span></span>
-<span id="cb980-6"><a href="perf-measure.html#cb980-6"></a><span class="co">#&gt; 2 x^0.5         4.5us    4.8us   203312.</span></span></code></pre></div>
+<span id="cb980-5"><a href="perf-measure.html#cb980-5"></a><span class="co">#&gt; 1 sqrt(x)       800ns    900ns   985756.</span></span>
+<span id="cb980-6"><a href="perf-measure.html#cb980-6"></a><span class="co">#&gt; 2 x^0.5         4.5us    4.7us   193576.</span></span></code></pre></div>
 </div>
 <div id="interpreting-results" class="section level3">
 <h3><span class="header-section-number">23.3.2</span> Interpreting results</h3>

@@ -1488,7 +1488,7 @@ order to evaluate normally.</p></li>
 <span id="cb953-13"><a href="translation.html#cb953-13"></a><span class="co">#&gt;     contents &lt;- paste(..., collapse = &quot;, &quot;)</span></span>
 <span id="cb953-14"><a href="translation.html#cb953-14"></a><span class="co">#&gt;     paste0(&quot;\\mathrm{foo}(&quot;, contents, &quot;)&quot;)</span></span>
 <span id="cb953-15"><a href="translation.html#cb953-15"></a><span class="co">#&gt; }</span></span>
-<span id="cb953-16"><a href="translation.html#cb953-16"></a><span class="co">#&gt; &lt;environment: 0x0000000019e4d760&gt;</span></span></code></pre></div>
+<span id="cb953-16"><a href="translation.html#cb953-16"></a><span class="co">#&gt; &lt;environment: 0x0000000019e36d98&gt;</span></span></code></pre></div>
 <p>And again we update <code>latex_env()</code>:</p>
 <div class="sourceCode" id="cb954"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb954-1"><a href="translation.html#cb954-1"></a>latex_env &lt;-<span class="st"> </span><span class="cf">function</span>(expr) {</span>
 <span id="cb954-2"><a href="translation.html#cb954-2"></a>  calls &lt;-<span class="st"> </span><span class="kw">all_calls</span>(expr)</span>

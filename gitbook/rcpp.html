@@ -942,7 +942,8 @@ more resources to help you learn Rcpp and C++.</p></li>
 <div id="prerequisites" class="section level3 unnumbered">
 <h3>Prerequisites</h3>
 <p>We’ll use <a href="http://www.rcpp.org/">Rcpp</a> to call C++ from R:</p>
-<div class="sourceCode" id="cb1000"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1000-1"><a href="rcpp.html#cb1000-1"></a><span class="kw">library</span>(Rcpp)</span></code></pre></div>
+<div class="sourceCode" id="cb1000"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1000-1"><a href="rcpp.html#cb1000-1"></a><span class="kw">library</span>(Rcpp)</span>
+<span id="cb1000-2"><a href="rcpp.html#cb1000-2"></a><span class="co">#&gt; Warning: 程辑包&#39;Rcpp&#39;是用R版本3.6.3 来建造的</span></span></code></pre></div>
 <p>You’ll also need a working C++ compiler. To get it:</p>
 <ul>
 <li>On Windows, install <a href="http://cran.r-project.org/bin/windows/Rtools/">Rtools</a>.</li>
@@ -1080,9 +1081,9 @@ source of bugs when converting R functions to C++.</p></li>
 <span id="cb1008-7"><a href="rcpp.html#cb1008-7"></a><span class="co">#&gt; # A tibble: 3 x 6</span></span>
 <span id="cb1008-8"><a href="rcpp.html#cb1008-8"></a><span class="co">#&gt;   expression      min   median `itr/sec` mem_alloc `gc/sec`</span></span>
 <span id="cb1008-9"><a href="rcpp.html#cb1008-9"></a><span class="co">#&gt;   &lt;bch:expr&gt; &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt; &lt;bch:byt&gt;    &lt;dbl&gt;</span></span>
-<span id="cb1008-10"><a href="rcpp.html#cb1008-10"></a><span class="co">#&gt; 1 sum(x)        1.2us    1.4us   645849.        0B        0</span></span>
-<span id="cb1008-11"><a href="rcpp.html#cb1008-11"></a><span class="co">#&gt; 2 sumC(x)       2.6us      4us   259702.    2.49KB        0</span></span>
-<span id="cb1008-12"><a href="rcpp.html#cb1008-12"></a><span class="co">#&gt; 3 sumR(x)      38.9us   43.1us    23035.   35.71KB        0</span></span></code></pre></div>
+<span id="cb1008-10"><a href="rcpp.html#cb1008-10"></a><span class="co">#&gt; 1 sum(x)        1.1us    1.2us   817007.        0B        0</span></span>
+<span id="cb1008-11"><a href="rcpp.html#cb1008-11"></a><span class="co">#&gt; 2 sumC(x)       2.6us    4.1us   236124.    2.49KB        0</span></span>
+<span id="cb1008-12"><a href="rcpp.html#cb1008-12"></a><span class="co">#&gt; 3 sumR(x)      39.4us   42.5us    21190.   35.71KB        0</span></span></code></pre></div>
 </div>
 <div id="vector-input-vector-output" class="section level3">
 <h3><span class="header-section-number">25.2.4</span> Vector input, vector output</h3>
@@ -1117,8 +1118,8 @@ existing one: <code>NumericVector zs = clone(ys)</code>.</p></li>
 <span id="cb1011-6"><a href="rcpp.html#cb1011-6"></a><span class="co">#&gt; # A tibble: 2 x 6</span></span>
 <span id="cb1011-7"><a href="rcpp.html#cb1011-7"></a><span class="co">#&gt;   expression          min   median `itr/sec` mem_alloc `gc/sec`</span></span>
 <span id="cb1011-8"><a href="rcpp.html#cb1011-8"></a><span class="co">#&gt;   &lt;bch:expr&gt;     &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt; &lt;bch:byt&gt;    &lt;dbl&gt;</span></span>
-<span id="cb1011-9"><a href="rcpp.html#cb1011-9"></a><span class="co">#&gt; 1 pdistR(0.5, y)   7.84ms   8.51ms      110.    7.63MB     53.3</span></span>
-<span id="cb1011-10"><a href="rcpp.html#cb1011-10"></a><span class="co">#&gt; 2 pdistC(0.5, y)   6.53ms   7.45ms      130.    7.63MB     42.4</span></span></code></pre></div>
+<span id="cb1011-9"><a href="rcpp.html#cb1011-9"></a><span class="co">#&gt; 1 pdistR(0.5, y)   8.02ms   9.03ms      99.9    7.63MB     48.3</span></span>
+<span id="cb1011-10"><a href="rcpp.html#cb1011-10"></a><span class="co">#&gt; 2 pdistC(0.5, y)   7.14ms   7.76ms     125.     7.63MB     39.6</span></span></code></pre></div>
 <p>On my computer, it takes around 5 ms with a 1 million element <code>y</code> vector. The C++ function is about 2.5 times faster, ~2 ms, but assuming it took you 10 minutes to write the C++ function, you’d need to run it ~200,000 times to make rewriting worthwhile. The reason why the C++ function is faster is subtle, and relates to memory management. The R version needs to create an intermediate vector the same length as y (<code>x - ys</code>), and allocating memory is an expensive operation. The C++ function avoids this overhead because it uses an intermediate scalar.</p>
 </div>
 <div id="sourceCpp" class="section level3">
@@ -1670,8 +1671,8 @@ into a scalar.</p></li>
 <span id="cb1040-6"><a href="rcpp.html#cb1040-6"></a><span class="co">#&gt; # A tibble: 2 x 6</span></span>
 <span id="cb1040-7"><a href="rcpp.html#cb1040-7"></a><span class="co">#&gt;   expression              min   median `itr/sec` mem_alloc `gc/sec`</span></span>
 <span id="cb1040-8"><a href="rcpp.html#cb1040-8"></a><span class="co">#&gt;   &lt;bch:expr&gt;         &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt; &lt;bch:byt&gt;    &lt;dbl&gt;</span></span>
-<span id="cb1040-9"><a href="rcpp.html#cb1040-9"></a><span class="co">#&gt; 1 gibbs_r(100, 10)     3.98ms   4.18ms      230.    4.97MB     43.3</span></span>
-<span id="cb1040-10"><a href="rcpp.html#cb1040-10"></a><span class="co">#&gt; 2 gibbs_cpp(100, 10)  195.8us  224.6us     4381.     4.1KB     32.7</span></span></code></pre></div>
+<span id="cb1040-9"><a href="rcpp.html#cb1040-9"></a><span class="co">#&gt; 1 gibbs_r(100, 10)     4.22ms   4.83ms      185.    4.97MB     34.4</span></span>
+<span id="cb1040-10"><a href="rcpp.html#cb1040-10"></a><span class="co">#&gt; 2 gibbs_cpp(100, 10)  203.5us  237.2us     4104.     4.1KB     30.4</span></span></code></pre></div>
 </div>
 <div id="r-vectorisation-versus-c-vectorisation" class="section level3">
 <h3><span class="header-section-number">25.6.2</span> R vectorisation versus C++ vectorisation</h3>
@@ -1746,9 +1747,9 @@ into a scalar.</p></li>
 <span id="cb1046-6"><a href="rcpp.html#cb1046-6"></a><span class="co">#&gt; # A tibble: 3 x 6</span></span>
 <span id="cb1046-7"><a href="rcpp.html#cb1046-7"></a><span class="co">#&gt;   expression      min   median `itr/sec` mem_alloc `gc/sec`</span></span>
 <span id="cb1046-8"><a href="rcpp.html#cb1046-8"></a><span class="co">#&gt;   &lt;bch:expr&gt; &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt; &lt;bch:byt&gt;    &lt;dbl&gt;</span></span>
-<span id="cb1046-9"><a href="rcpp.html#cb1046-9"></a><span class="co">#&gt; 1 vacc1        1.75ms   2.08ms      429.    7.86KB    25.3 </span></span>
-<span id="cb1046-10"><a href="rcpp.html#cb1046-10"></a><span class="co">#&gt; 2 vacc2        76.1us   83.1us    11677.  153.15KB    32.7 </span></span>
-<span id="cb1046-11"><a href="rcpp.html#cb1046-11"></a><span class="co">#&gt; 3 vacc3        42.1us   44.5us    21461.   14.48KB     8.94</span></span></code></pre></div>
+<span id="cb1046-9"><a href="rcpp.html#cb1046-9"></a><span class="co">#&gt; 1 vacc1        1.89ms   2.21ms      376.    7.86KB    22.9 </span></span>
+<span id="cb1046-10"><a href="rcpp.html#cb1046-10"></a><span class="co">#&gt; 2 vacc2        81.2us     89us    10678.  153.15KB    30.8 </span></span>
+<span id="cb1046-11"><a href="rcpp.html#cb1046-11"></a><span class="co">#&gt; 3 vacc3          44us   45.6us    21658.   14.48KB     6.50</span></span></code></pre></div>
 <p>Not surprisingly, our original approach with loops is very slow. Vectorising in R gives a huge speedup, and we can eke out even more performance (about ten times) with the C++ loop. I was a little surprised that the C++ was so much faster, but it is because the R version has to create 11 vectors to store intermediate results, where the C++ code only needs to create 1.</p>
 </div>
 </div>

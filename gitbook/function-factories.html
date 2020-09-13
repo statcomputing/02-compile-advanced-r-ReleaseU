@@ -977,23 +977,23 @@ environment of the function factory.</p>
 <span id="cb462-2"><a href="function-factories.html#cb462-2"></a><span class="co">#&gt; function(x) {</span></span>
 <span id="cb462-3"><a href="function-factories.html#cb462-3"></a><span class="co">#&gt;     x ^ exp</span></span>
 <span id="cb462-4"><a href="function-factories.html#cb462-4"></a><span class="co">#&gt;   }</span></span>
-<span id="cb462-5"><a href="function-factories.html#cb462-5"></a><span class="co">#&gt; &lt;environment: 0x0000000015211e70&gt;</span></span>
+<span id="cb462-5"><a href="function-factories.html#cb462-5"></a><span class="co">#&gt; &lt;environment: 0x000000001264cc18&gt;</span></span>
 <span id="cb462-6"><a href="function-factories.html#cb462-6"></a></span>
 <span id="cb462-7"><a href="function-factories.html#cb462-7"></a>cube</span>
 <span id="cb462-8"><a href="function-factories.html#cb462-8"></a><span class="co">#&gt; function(x) {</span></span>
 <span id="cb462-9"><a href="function-factories.html#cb462-9"></a><span class="co">#&gt;     x ^ exp</span></span>
 <span id="cb462-10"><a href="function-factories.html#cb462-10"></a><span class="co">#&gt;   }</span></span>
-<span id="cb462-11"><a href="function-factories.html#cb462-11"></a><span class="co">#&gt; &lt;bytecode: 0x00000000134c0968&gt;</span></span>
-<span id="cb462-12"><a href="function-factories.html#cb462-12"></a><span class="co">#&gt; &lt;environment: 0x0000000014412348&gt;</span></span></code></pre></div>
+<span id="cb462-11"><a href="function-factories.html#cb462-11"></a><span class="co">#&gt; &lt;bytecode: 0x00000000130fd690&gt;</span></span>
+<span id="cb462-12"><a href="function-factories.html#cb462-12"></a><span class="co">#&gt; &lt;environment: 0x0000000013ac53b8&gt;</span></span></code></pre></div>
 <p>It’s obvious where <code>x</code> comes from, but how does R find the value associated with <code>exp</code>? Simply printing the manufactured functions is not revealing because the bodies are identical; the contents of the enclosing environment are the important factors. We can get a little more insight by using <code>rlang::env_print()</code>. That shows us that we have two different environments (each of which was originally an execution environment of <code>power1()</code>). The environments have the same parent, which is the enclosing environment of <code>power1()</code>, the global environment.</p>
 <div class="sourceCode" id="cb463"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb463-1"><a href="function-factories.html#cb463-1"></a><span class="kw">env_print</span>(square)</span>
-<span id="cb463-2"><a href="function-factories.html#cb463-2"></a><span class="co">#&gt; &lt;environment: 0000000015211E70&gt;</span></span>
+<span id="cb463-2"><a href="function-factories.html#cb463-2"></a><span class="co">#&gt; &lt;environment: 000000001264CC18&gt;</span></span>
 <span id="cb463-3"><a href="function-factories.html#cb463-3"></a><span class="co">#&gt; parent: &lt;environment: global&gt;</span></span>
 <span id="cb463-4"><a href="function-factories.html#cb463-4"></a><span class="co">#&gt; bindings:</span></span>
 <span id="cb463-5"><a href="function-factories.html#cb463-5"></a><span class="co">#&gt;  * exp: &lt;dbl&gt;</span></span>
 <span id="cb463-6"><a href="function-factories.html#cb463-6"></a></span>
 <span id="cb463-7"><a href="function-factories.html#cb463-7"></a><span class="kw">env_print</span>(cube)</span>
-<span id="cb463-8"><a href="function-factories.html#cb463-8"></a><span class="co">#&gt; &lt;environment: 0000000014412348&gt;</span></span>
+<span id="cb463-8"><a href="function-factories.html#cb463-8"></a><span class="co">#&gt; &lt;environment: 0000000013AC53B8&gt;</span></span>
 <span id="cb463-9"><a href="function-factories.html#cb463-9"></a><span class="co">#&gt; parent: &lt;environment: global&gt;</span></span>
 <span id="cb463-10"><a href="function-factories.html#cb463-10"></a><span class="co">#&gt; bindings:</span></span>
 <span id="cb463-11"><a href="function-factories.html#cb463-11"></a><span class="co">#&gt;  * exp: &lt;dbl&gt;</span></span></code></pre></div>
@@ -1095,7 +1095,7 @@ enclosing environment.</p></li>
 <span id="cb471-6"><a href="function-factories.html#cb471-6"></a></span>
 <span id="cb471-7"><a href="function-factories.html#cb471-7"></a>g1 &lt;-<span class="st"> </span><span class="kw">f1</span>(<span class="fl">1e6</span>)</span>
 <span id="cb471-8"><a href="function-factories.html#cb471-8"></a>lobstr<span class="op">::</span><span class="kw">obj_size</span>(g1)</span>
-<span id="cb471-9"><a href="function-factories.html#cb471-9"></a><span class="co">#&gt; 8,013,104 B</span></span>
+<span id="cb471-9"><a href="function-factories.html#cb471-9"></a><span class="co">#&gt; 8,013,120 B</span></span>
 <span id="cb471-10"><a href="function-factories.html#cb471-10"></a></span>
 <span id="cb471-11"><a href="function-factories.html#cb471-11"></a>f2 &lt;-<span class="st"> </span><span class="cf">function</span>(n) {</span>
 <span id="cb471-12"><a href="function-factories.html#cb471-12"></a>  x &lt;-<span class="st"> </span><span class="kw">runif</span>(n)</span>
@@ -1106,7 +1106,7 @@ enclosing environment.</p></li>
 <span id="cb471-17"><a href="function-factories.html#cb471-17"></a></span>
 <span id="cb471-18"><a href="function-factories.html#cb471-18"></a>g2 &lt;-<span class="st"> </span><span class="kw">f2</span>(<span class="fl">1e6</span>)</span>
 <span id="cb471-19"><a href="function-factories.html#cb471-19"></a>lobstr<span class="op">::</span><span class="kw">obj_size</span>(g2)</span>
-<span id="cb471-20"><a href="function-factories.html#cb471-20"></a><span class="co">#&gt; 12,944 B</span></span></code></pre></div>
+<span id="cb471-20"><a href="function-factories.html#cb471-20"></a><span class="co">#&gt; 12,960 B</span></span></code></pre></div>
 </div>
 <div id="exercises" class="section level3">
 <h3><span class="header-section-number">10.2.6</span> Exercises</h3>
@@ -1115,7 +1115,7 @@ enclosing environment.</p></li>
 <div class="sourceCode" id="cb472"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb472-1"><a href="function-factories.html#cb472-1"></a>force</span>
 <span id="cb472-2"><a href="function-factories.html#cb472-2"></a><span class="co">#&gt; function (x) </span></span>
 <span id="cb472-3"><a href="function-factories.html#cb472-3"></a><span class="co">#&gt; x</span></span>
-<span id="cb472-4"><a href="function-factories.html#cb472-4"></a><span class="co">#&gt; &lt;bytecode: 0x00000000106a3a18&gt;</span></span>
+<span id="cb472-4"><a href="function-factories.html#cb472-4"></a><span class="co">#&gt; &lt;bytecode: 0x0000000012d83b18&gt;</span></span>
 <span id="cb472-5"><a href="function-factories.html#cb472-5"></a><span class="co">#&gt; &lt;environment: namespace:base&gt;</span></span></code></pre></div>
 <p>Why is it better to <code>force(x)</code> instead of just <code>x</code>?</p></li>
 <li><p>Base R contains two function factories, <code>approxfun()</code> and <code>ecdf()</code>.
@@ -1274,12 +1274,12 @@ by default, but the vector graphics use inches.</p></li>
 <span id="cb482-24"><a href="function-factories.html#cb482-24"></a></span>
 <span id="cb482-25"><a href="function-factories.html#cb482-25"></a><span class="kw">plot_dev</span>(<span class="st">&quot;pdf&quot;</span>)</span>
 <span id="cb482-26"><a href="function-factories.html#cb482-26"></a><span class="co">#&gt; function(filename, ...) grDevices::pdf(file = filename, ...)</span></span>
-<span id="cb482-27"><a href="function-factories.html#cb482-27"></a><span class="co">#&gt; &lt;bytecode: 0x00000000187e27f8&gt;</span></span>
-<span id="cb482-28"><a href="function-factories.html#cb482-28"></a><span class="co">#&gt; &lt;environment: 0x00000000180fd8c8&gt;</span></span>
+<span id="cb482-27"><a href="function-factories.html#cb482-27"></a><span class="co">#&gt; &lt;bytecode: 0x0000000018fc6a80&gt;</span></span>
+<span id="cb482-28"><a href="function-factories.html#cb482-28"></a><span class="co">#&gt; &lt;environment: 0x00000000188d2b58&gt;</span></span>
 <span id="cb482-29"><a href="function-factories.html#cb482-29"></a><span class="kw">plot_dev</span>(<span class="st">&quot;png&quot;</span>)</span>
 <span id="cb482-30"><a href="function-factories.html#cb482-30"></a><span class="co">#&gt; function(...) grDevices::png(..., res = dpi, units = &quot;in&quot;)</span></span>
-<span id="cb482-31"><a href="function-factories.html#cb482-31"></a><span class="co">#&gt; &lt;bytecode: 0x00000000196618c0&gt;</span></span>
-<span id="cb482-32"><a href="function-factories.html#cb482-32"></a><span class="co">#&gt; &lt;environment: 0x0000000019a216e8&gt;</span></span></code></pre></div>
+<span id="cb482-31"><a href="function-factories.html#cb482-31"></a><span class="co">#&gt; &lt;bytecode: 0x000000001963e098&gt;</span></span>
+<span id="cb482-32"><a href="function-factories.html#cb482-32"></a><span class="co">#&gt; &lt;environment: 0x0000000019a0a548&gt;</span></span></code></pre></div>
 </div>
 <div id="exercises-1" class="section level3">
 <h3><span class="header-section-number">10.3.4</span> Exercises</h3>
@@ -1505,8 +1505,8 @@ How does changing the length of <code>x</code> change the results?</p></li>
 <span id="cb496-13"><a href="function-factories.html#cb496-13"></a><span class="co">#&gt; function(x) {</span></span>
 <span id="cb496-14"><a href="function-factories.html#cb496-14"></a><span class="co">#&gt;     x ^ exp</span></span>
 <span id="cb496-15"><a href="function-factories.html#cb496-15"></a><span class="co">#&gt;   }</span></span>
-<span id="cb496-16"><a href="function-factories.html#cb496-16"></a><span class="co">#&gt; &lt;bytecode: 0x00000000134c0968&gt;</span></span>
-<span id="cb496-17"><a href="function-factories.html#cb496-17"></a><span class="co">#&gt; &lt;environment: 0x000000001ccf4868&gt;</span></span></code></pre></div>
+<span id="cb496-16"><a href="function-factories.html#cb496-16"></a><span class="co">#&gt; &lt;bytecode: 0x00000000130fd690&gt;</span></span>
+<span id="cb496-17"><a href="function-factories.html#cb496-17"></a><span class="co">#&gt; &lt;environment: 0x000000001d4e3d90&gt;</span></span></code></pre></div>
 <p>This idea extends in a straightforward way if your function factory takes two (replace <code>map()</code> with <code>map2()</code>) or more (replace with <code>pmap()</code>) arguments.</p>
 
 <p>One downside of the current construction is that you have to prefix every function call with <code>funs$</code>. There are three ways to eliminate this additional syntax:</p>

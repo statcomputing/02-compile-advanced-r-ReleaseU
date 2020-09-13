@@ -95,8 +95,7 @@ If you do the same thing with a functional, you get no output, making it hard to
 
 ```r
 map_dbl(x, sum)
-#> Error in .Primitive("sum")(..., na.rm = na.rm):
-#> 'type'(character)参数不对
+#> Error in .Primitive("sum")(..., na.rm = na.rm): 'type'(character)参数不对
 ```
 
 `purrr::safely()` provides a tool to help with this problem. `safely()` is a function operator that transforms a function to turn errors into data. (You can learn the basic idea that makes it work in Section \@ref(try-success-failure).) Let's start by taking a look at it outside of `map_dbl()`:
@@ -107,8 +106,8 @@ safe_sum <- safely(sum)
 safe_sum
 #> function (...) 
 #> capture_error(.f(...), otherwise, quiet)
-#> <bytecode: 0x00000000191927f0>
-#> <environment: 0x0000000019192358>
+#> <bytecode: 0x0000000018a77100>
+#> <environment: 0x0000000018a76c68>
 ```
 
 Like all function operators, `safely()` takes a function and returns a wrapped function which we can call as usual:
@@ -151,7 +150,7 @@ str(out)
 #>   ..$ error :List of 2
 #>   .. ..$ message: chr "'type'(character)参数不对"
 #>   .. ..$ call   : language .Primitive("sum")(..., na.rm = na.rm)
-#>   .. ..- attr(*, "class")= chr [1:3] "simpleError" "error" "condit"..
+#>   .. ..- attr(*, "class")= chr [1:3] "simpleError" "error" "condition"
 ```
 
 The output is in a slightly inconvenient form, since we have four lists, each of which is a list containing the `result` and the `error`. We can make the output easier to use by turning it "inside-out" with `purrr::transpose()`, so that we get a list of `result`s and a list of `error`s:
@@ -173,7 +172,7 @@ str(out)
 #>   ..$ :List of 2
 #>   .. ..$ message: chr "'type'(character)参数不对"
 #>   .. ..$ call   : language .Primitive("sum")(..., na.rm = na.rm)
-#>   .. ..- attr(*, "class")= chr [1:3] "simpleError" "error" "condit"..
+#>   .. ..- attr(*, "class")= chr [1:3] "simpleError" "error" "condition"
 ```
 
 Now we can easily find the results that worked, or the inputs that failed:
@@ -250,7 +249,7 @@ slow_function <- function(x) {
 system.time(print(slow_function(1)))
 #> [1] 0.808
 #> 用户 系统 流逝 
-#>    0    0    1
+#> 0.00 0.00 1.02
 
 system.time(print(slow_function(1)))
 #> [1] 8.34
@@ -271,7 +270,7 @@ system.time(print(fast_function(1)))
 system.time(print(fast_function(1)))
 #> [1] 6.01
 #> 用户 系统 流逝 
-#> 0.02 0.00 0.01
+#> 0.02 0.00 0.02
 ```
 
 A relatively realistic use of memoisation is computing the Fibonacci series. The Fibonacci series is defined recursively: the first two values are defined by convention, $f(0) = 0$, $f(1) = 1$, and then $f(n) = f(n - 1) + f(n - 2)$ (for any positive integer). A naive version is slow because, for example, `fib(10)` computes `fib(9)` and `fib(8)`, and `fib(9)` computes `fib(8)` and `fib(7)`, and so on. 
@@ -284,10 +283,10 @@ fib <- function(n) {
 }
 system.time(fib(23))
 #> 用户 系统 流逝 
-#> 0.03 0.00 0.04
+#> 0.05 0.00 0.05
 system.time(fib(24))
 #> 用户 系统 流逝 
-#> 0.05 0.00 0.05
+#> 0.06 0.00 0.06
 ```
 
 Memoising `fib()` makes the implementation much faster because each value is computed only once:
@@ -300,7 +299,7 @@ fib2 <- memoise::memoise(function(n) {
 })
 system.time(fib2(23))
 #> 用户 系统 流逝 
-#> 0.04 0.00 0.03
+#> 0.03 0.00 0.03
 ```
 
 And future calls can rely on previous computations:

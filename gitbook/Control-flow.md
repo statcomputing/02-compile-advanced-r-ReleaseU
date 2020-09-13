@@ -113,8 +113,7 @@ The exception is a logical vector of length greater than 1, which generates a wa
 
 ```r
 if (c(TRUE, FALSE)) 1
-#> Warning in if (c(TRUE, FALSE)) 1: 条件的长度大于一，因此只能用其第一
-#> 元素
+#> Warning in if (c(TRUE, FALSE)) 1: 条件的长度大于一，因此只能用其第一元素
 #> [1] 1
 ```
 
@@ -141,8 +140,7 @@ ifelse(x %% 5 == 0, "XXX", as.character(x))
 #>  [1] "1"   "2"   "3"   "4"   "XXX" "6"   "7"   "8"   "9"   "XXX"
 
 ifelse(x %% 2 == 0, "even", "odd")
-#>  [1] "odd"  "even" "odd"  "even" "odd"  "even" "odd"  "even" "odd" 
-#> [10] "even"
+#>  [1] "odd"  "even" "odd"  "even" "odd"  "even" "odd"  "even" "odd"  "even"
 ```
 
 Note that missing values will be propagated into the output.
@@ -160,8 +158,7 @@ dplyr::case_when(
   is.na(x) ~ "???",
   TRUE ~ as.character(x)
 )
-#>  [1] "1"    "2"    "3"    "4"    "fizz" "6"    "buzz" "8"    "9"   
-#> [10] "fizz"
+#>  [1] "1"    "2"    "3"    "4"    "fizz" "6"    "buzz" "8"    "9"    "fizz"
 ```
 
 ### `switch()` statement {#switch}

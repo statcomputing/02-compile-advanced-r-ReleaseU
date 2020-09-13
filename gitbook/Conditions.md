@@ -195,8 +195,8 @@ formals(1)
 #> NULL
 
 file.remove("this-file-doesn't-exist")
-#> Warning in file.remove("this-file-doesn't-exist"): 无法删除文件'this-
-#> file-doesn't-exist'，原因是'No such file or directory'
+#> Warning in file.remove("this-file-doesn't-exist"): 无法删除文件'this-file-
+#> doesn't-exist'，原因是'No such file or directory'
 #> [1] FALSE
 
 lag(1:3, k = 1.5)
@@ -670,18 +670,18 @@ withCallingHandlers(f(), message = function(cnd) {
   lobstr::cst()
   cnd_muffle(cnd)
 })
-#>      █
-#>   1. ├─base::withCallingHandlers(...)
-#>   2. ├─global::f()
-#>   3. │ └─global::g()
-#>   4. │   └─global::h()
-#>   5. │     └─base::message("!")
-#>   6. │       ├─base::withRestarts(...)
-#>   7. │       │ └─base:::withOneRestart(expr, restarts[[1L]])
-#>   8. │       │   └─base:::doWithOneRestart(return(expr), restart)
-#>   9. │       └─base::signalCondition(cond)
-#>  10. └─(function (cnd) ...
-#>  11.   └─lobstr::cst()
+#>      x
+#>   1. +-base::withCallingHandlers(...)
+#>   2. +-global::f()
+#>   3. | \-global::g()
+#>   4. |   \-global::h()
+#>   5. |     \-base::message("!")
+#>   6. |       +-base::withRestarts(...)
+#>   7. |       | \-base:::withOneRestart(expr, restarts[[1L]])
+#>   8. |       |   \-base:::doWithOneRestart(return(expr), restart)
+#>   9. |       \-base::signalCondition(cond)
+#>  10. \-(function (cnd) ...
+#>  11.   \-lobstr::cst()
 ```
 
 Whereas exiting handlers are called in the context of the call to `tryCatch()`:
@@ -689,12 +689,12 @@ Whereas exiting handlers are called in the context of the call to `tryCatch()`:
 
 ```r
 tryCatch(f(), message = function(cnd) lobstr::cst())
-#>     █
-#>  1. └─base::tryCatch(f(), message = function(cnd) lobstr::cst())
-#>  2.   └─base:::tryCatchList(expr, classes, parentenv, handlers)
-#>  3.     └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
-#>  4.       └─value[[3L]](cond)
-#>  5.         └─lobstr::cst()
+#>     x
+#>  1. \-base::tryCatch(f(), message = function(cnd) lobstr::cst())
+#>  2.   \-base:::tryCatchList(expr, classes, parentenv, handlers)
+#>  3.     \-base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
+#>  4.       \-value[[3L]](cond)
+#>  5.         \-lobstr::cst()
 ```
 
 ### Exercises
@@ -1075,7 +1075,7 @@ str(safety(stop("Error!")))
 #>  $ result: NULL
 #>  $ error :List of 2
 #>   ..$ message: chr "Error!"
-#>   ..$ call   : language doTryCatch(return(expr), name, parentenv, h..
+#>   ..$ call   : language doTryCatch(return(expr), name, parentenv, handler)
 #>   ..- attr(*, "class")= chr [1:3] "simpleError" "error" "condition"
 ```
 

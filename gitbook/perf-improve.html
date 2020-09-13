@@ -962,8 +962,8 @@ more resources that will help you write fast code.</p></li>
 <span id="cb986-5"><a href="perf-improve.html#cb986-5"></a><span class="co">#&gt; # A tibble: 2 x 4</span></span>
 <span id="cb986-6"><a href="perf-improve.html#cb986-6"></a><span class="co">#&gt;   expression      min   median `itr/sec`</span></span>
 <span id="cb986-7"><a href="perf-improve.html#cb986-7"></a><span class="co">#&gt;   &lt;bch:expr&gt; &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt;</span></span>
-<span id="cb986-8"><a href="perf-improve.html#cb986-8"></a><span class="co">#&gt; 1 mean1(x)      221us    242us     4036.</span></span>
-<span id="cb986-9"><a href="perf-improve.html#cb986-9"></a><span class="co">#&gt; 2 mean2(x)      102us    105us     9359.</span></span></code></pre></div>
+<span id="cb986-8"><a href="perf-improve.html#cb986-8"></a><span class="co">#&gt; 1 mean1(x)      221us  241.9us     4026.</span></span>
+<span id="cb986-9"><a href="perf-improve.html#cb986-9"></a><span class="co">#&gt; 2 mean2(x)       87us   92.7us    10428.</span></span></code></pre></div>
 <p>(You might be surprised by the results: <code>mean(x)</code> is considerably slower than <code>sum(x) / length(x)</code>. This is because, among other reasons, <code>mean(x)</code> makes two passes over the vector to be more numerically accurate.)</p>
 <p>If you’d like to see this strategy in action, I’ve used it a few times on stackoverflow:</p>
 <ul>
@@ -1048,8 +1048,8 @@ it to a variable, and then calling that function.</p></li>
 <span id="cb987-7"><a href="perf-improve.html#cb987-7"></a><span class="co">#&gt; # A tibble: 2 x 4</span></span>
 <span id="cb987-8"><a href="perf-improve.html#cb987-8"></a><span class="co">#&gt;   expression           min   median `itr/sec`</span></span>
 <span id="cb987-9"><a href="perf-improve.html#cb987-9"></a><span class="co">#&gt;   &lt;bch:expr&gt;      &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt;</span></span>
-<span id="cb987-10"><a href="perf-improve.html#cb987-10"></a><span class="co">#&gt; 1 mean(x)            4.3us    5.1us   158421.</span></span>
-<span id="cb987-11"><a href="perf-improve.html#cb987-11"></a><span class="co">#&gt; 2 mean.default(x)    1.4us    1.6us   479658.</span></span></code></pre></div>
+<span id="cb987-10"><a href="perf-improve.html#cb987-10"></a><span class="co">#&gt; 1 mean(x)            3.4us    3.8us   245510.</span></span>
+<span id="cb987-11"><a href="perf-improve.html#cb987-11"></a><span class="co">#&gt; 2 mean.default(x)    1.1us    1.3us   706070.</span></span></code></pre></div>
 <p>This optimisation is a little risky. While <code>mean.default()</code> is almost twice as fast for 100 values, it will fail in surprising ways if <code>x</code> is not a numeric vector.</p>
 <p>An even riskier optimisation is to directly call the underlying <code>.Internal</code> function. This is faster because it doesn’t do any input checking or handle NA’s, so you are buying speed at the cost of safety.</p>
 <div class="sourceCode" id="cb988"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb988-1"><a href="perf-improve.html#cb988-1"></a>x &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="fl">1e2</span>)</span>
@@ -1061,9 +1061,9 @@ it to a variable, and then calling that function.</p></li>
 <span id="cb988-7"><a href="perf-improve.html#cb988-7"></a><span class="co">#&gt; # A tibble: 3 x 4</span></span>
 <span id="cb988-8"><a href="perf-improve.html#cb988-8"></a><span class="co">#&gt;   expression              min   median `itr/sec`</span></span>
 <span id="cb988-9"><a href="perf-improve.html#cb988-9"></a><span class="co">#&gt;   &lt;bch:expr&gt;         &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt;</span></span>
-<span id="cb988-10"><a href="perf-improve.html#cb988-10"></a><span class="co">#&gt; 1 mean(x)               4.7us    5.1us   184882.</span></span>
-<span id="cb988-11"><a href="perf-improve.html#cb988-11"></a><span class="co">#&gt; 2 mean.default(x)       1.3us    1.5us   582428.</span></span>
-<span id="cb988-12"><a href="perf-improve.html#cb988-12"></a><span class="co">#&gt; 3 .Internal(mean(x))    300ns    400ns  2568918.</span></span></code></pre></div>
+<span id="cb988-10"><a href="perf-improve.html#cb988-10"></a><span class="co">#&gt; 1 mean(x)               3.8us    4.3us   201287.</span></span>
+<span id="cb988-11"><a href="perf-improve.html#cb988-11"></a><span class="co">#&gt; 2 mean.default(x)       1.2us    1.4us   652742.</span></span>
+<span id="cb988-12"><a href="perf-improve.html#cb988-12"></a><span class="co">#&gt; 3 .Internal(mean(x))    200ns    300ns  2890051.</span></span></code></pre></div>
 <p>NB: most of these differences arise because <code>x</code> is small. If you increase the size the differences basically disappear, because most of the time is now spent computing the mean, not finding the underlying implementation. This is a good reminder that the size of the input matters, and you should motivate your optimisations based on realistic data.</p>
 <div class="sourceCode" id="cb989"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb989-1"><a href="perf-improve.html#cb989-1"></a>x &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="fl">1e4</span>)</span>
 <span id="cb989-2"><a href="perf-improve.html#cb989-2"></a>bench<span class="op">::</span><span class="kw">mark</span>(</span>
@@ -1074,9 +1074,9 @@ it to a variable, and then calling that function.</p></li>
 <span id="cb989-7"><a href="perf-improve.html#cb989-7"></a><span class="co">#&gt; # A tibble: 3 x 4</span></span>
 <span id="cb989-8"><a href="perf-improve.html#cb989-8"></a><span class="co">#&gt;   expression              min   median `itr/sec`</span></span>
 <span id="cb989-9"><a href="perf-improve.html#cb989-9"></a><span class="co">#&gt;   &lt;bch:expr&gt;         &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt;</span></span>
-<span id="cb989-10"><a href="perf-improve.html#cb989-10"></a><span class="co">#&gt; 1 mean(x)                25us   26.3us    36164.</span></span>
-<span id="cb989-11"><a href="perf-improve.html#cb989-11"></a><span class="co">#&gt; 2 mean.default(x)      20.7us     23us    43554.</span></span>
-<span id="cb989-12"><a href="perf-improve.html#cb989-12"></a><span class="co">#&gt; 3 .Internal(mean(x))   19.6us   20.3us    49051.</span></span></code></pre></div>
+<span id="cb989-10"><a href="perf-improve.html#cb989-10"></a><span class="co">#&gt; 1 mean(x)                23us   24.1us    40621.</span></span>
+<span id="cb989-11"><a href="perf-improve.html#cb989-11"></a><span class="co">#&gt; 2 mean.default(x)      19.4us   19.8us    48988.</span></span>
+<span id="cb989-12"><a href="perf-improve.html#cb989-12"></a><span class="co">#&gt; 3 .Internal(mean(x))   18.3us   19.7us    50365.</span></span></code></pre></div>
 </div>
 <div id="as.data.frame" class="section level3">
 <h3><span class="header-section-number">24.4.2</span> <code>as.data.frame()</code></h3>
@@ -1098,8 +1098,8 @@ it to a variable, and then calling that function.</p></li>
 <span id="cb990-14"><a href="perf-improve.html#cb990-14"></a><span class="co">#&gt; # A tibble: 2 x 4</span></span>
 <span id="cb990-15"><a href="perf-improve.html#cb990-15"></a><span class="co">#&gt;   expression         min   median `itr/sec`</span></span>
 <span id="cb990-16"><a href="perf-improve.html#cb990-16"></a><span class="co">#&gt;   &lt;bch:expr&gt;    &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt;</span></span>
-<span id="cb990-17"><a href="perf-improve.html#cb990-17"></a><span class="co">#&gt; 1 as.data.frame   1.24ms   1.34ms      682.</span></span>
-<span id="cb990-18"><a href="perf-improve.html#cb990-18"></a><span class="co">#&gt; 2 quick_df         7.7us    8.7us    87292.</span></span></code></pre></div>
+<span id="cb990-17"><a href="perf-improve.html#cb990-17"></a><span class="co">#&gt; 1 as.data.frame   1.04ms   1.15ms      843.</span></span>
+<span id="cb990-18"><a href="perf-improve.html#cb990-18"></a><span class="co">#&gt; 2 quick_df         6.1us    6.9us   135553.</span></span></code></pre></div>
 <p>Again, note the trade-off. This method is fast because it’s dangerous. If you give it bad inputs, you’ll get a corrupt data frame:</p>
 <div class="sourceCode" id="cb991"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb991-1"><a href="perf-improve.html#cb991-1"></a><span class="kw">quickdf</span>(<span class="kw">list</span>(<span class="dt">x =</span> <span class="dv">1</span>, <span class="dt">y =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">2</span>))</span>
 <span id="cb991-2"><a href="perf-improve.html#cb991-2"></a><span class="co">#&gt; Warning in format.data.frame(if (omit) x[seq_len(n0), , drop = FALSE] else x, :</span></span>
@@ -1170,9 +1170,9 @@ how to use <code>cut()</code> and <code>findInterval()</code>.</p></li>
 <span id="cb993-13"><a href="perf-improve.html#cb993-13"></a><span class="co">#&gt; # A tibble: 3 x 4</span></span>
 <span id="cb993-14"><a href="perf-improve.html#cb993-14"></a><span class="co">#&gt;   expression        min   median `itr/sec`</span></span>
 <span id="cb993-15"><a href="perf-improve.html#cb993-15"></a><span class="co">#&gt;   &lt;bch:expr&gt;   &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt;</span></span>
-<span id="cb993-16"><a href="perf-improve.html#cb993-16"></a><span class="co">#&gt; 1 lookup[x1]      600ns    800ns   982444.</span></span>
-<span id="cb993-17"><a href="perf-improve.html#cb993-17"></a><span class="co">#&gt; 2 lookup[x10]     1.7us      2us   355532.</span></span>
-<span id="cb993-18"><a href="perf-improve.html#cb993-18"></a><span class="co">#&gt; 3 lookup[x100]    3.5us    5.4us   156086.</span></span></code></pre></div>
+<span id="cb993-16"><a href="perf-improve.html#cb993-16"></a><span class="co">#&gt; 1 lookup[x1]      500ns    700ns  1115710.</span></span>
+<span id="cb993-17"><a href="perf-improve.html#cb993-17"></a><span class="co">#&gt; 2 lookup[x10]     1.4us    1.7us   425978.</span></span>
+<span id="cb993-18"><a href="perf-improve.html#cb993-18"></a><span class="co">#&gt; 3 lookup[x100]    3.1us    4.7us   206546.</span></span></code></pre></div>
 <p>Vectorisation won’t solve every problem, and rather than torturing an existing algorithm into one that uses a vectorised approach, you’re often better off writing your own vectorised function in C++. You’ll learn how to do so in Chapter <a href="rcpp.html#rcpp">25</a>.</p>
 <div id="exercises-2" class="section level3">
 <h3><span class="header-section-number">24.5.1</span> Exercises</h3>
@@ -1216,10 +1216,10 @@ it than the naive <code>sum(x * w)</code>?</p></li>
 <span id="cb994-22"><a href="perf-improve.html#cb994-22"></a><span class="co">#&gt; # A tibble: 4 x 4</span></span>
 <span id="cb994-23"><a href="perf-improve.html#cb994-23"></a><span class="co">#&gt;   expression      min   median `itr/sec`</span></span>
 <span id="cb994-24"><a href="perf-improve.html#cb994-24"></a><span class="co">#&gt;   &lt;bch:expr&gt; &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt;</span></span>
-<span id="cb994-25"><a href="perf-improve.html#cb994-25"></a><span class="co">#&gt; 1 loop10       20.4us   22.7us    41921.</span></span>
-<span id="cb994-26"><a href="perf-improve.html#cb994-26"></a><span class="co">#&gt; 2 loop100     643.1us  689.2us     1436.</span></span>
-<span id="cb994-27"><a href="perf-improve.html#cb994-27"></a><span class="co">#&gt; 3 vec10         3.7us    4.1us   231400.</span></span>
-<span id="cb994-28"><a href="perf-improve.html#cb994-28"></a><span class="co">#&gt; 4 vec100       28.1us   29.2us    33204.</span></span></code></pre></div>
+<span id="cb994-25"><a href="perf-improve.html#cb994-25"></a><span class="co">#&gt; 1 loop10       19.1us   21.1us    46252.</span></span>
+<span id="cb994-26"><a href="perf-improve.html#cb994-26"></a><span class="co">#&gt; 2 loop100     623.5us  666.4us     1478.</span></span>
+<span id="cb994-27"><a href="perf-improve.html#cb994-27"></a><span class="co">#&gt; 3 vec10         3.7us      4us   224077.</span></span>
+<span id="cb994-28"><a href="perf-improve.html#cb994-28"></a><span class="co">#&gt; 4 vec100       28.1us   29.2us    30661.</span></span></code></pre></div>
 <p>Modifying an object in a loop, e.g., <code>x[i] &lt;- y</code>, can also create a copy, depending on the class of <code>x</code>. Section <a href="names-values.html#single-binding">2.5.1</a> discusses this issue in more depth and gives you some tools to determine when you’re making copies.</p>
 </div>
 <div id="t-test" class="section level2">
@@ -1237,21 +1237,21 @@ it than the naive <code>sum(x * w)</code>?</p></li>
 <span id="cb996-4"><a href="perf-improve.html#cb996-4"></a>  }</span>
 <span id="cb996-5"><a href="perf-improve.html#cb996-5"></a>)</span>
 <span id="cb996-6"><a href="perf-improve.html#cb996-6"></a><span class="co">#&gt; 用户 系统 流逝 </span></span>
-<span id="cb996-7"><a href="perf-improve.html#cb996-7"></a><span class="co">#&gt; 0.67 0.00 0.67</span></span>
+<span id="cb996-7"><a href="perf-improve.html#cb996-7"></a><span class="co">#&gt; 0.87 0.00 0.88</span></span>
 <span id="cb996-8"><a href="perf-improve.html#cb996-8"></a><span class="kw">system.time</span>(</span>
 <span id="cb996-9"><a href="perf-improve.html#cb996-9"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>m) {</span>
 <span id="cb996-10"><a href="perf-improve.html#cb996-10"></a>    <span class="kw">t.test</span>(X[i, grp <span class="op">==</span><span class="st"> </span><span class="dv">1</span>], X[i, grp <span class="op">==</span><span class="st"> </span><span class="dv">2</span>])<span class="op">$</span>statistic</span>
 <span id="cb996-11"><a href="perf-improve.html#cb996-11"></a>  }</span>
 <span id="cb996-12"><a href="perf-improve.html#cb996-12"></a>)</span>
 <span id="cb996-13"><a href="perf-improve.html#cb996-13"></a><span class="co">#&gt; 用户 系统 流逝 </span></span>
-<span id="cb996-14"><a href="perf-improve.html#cb996-14"></a><span class="co">#&gt; 0.12 0.00 0.12</span></span></code></pre></div>
+<span id="cb996-14"><a href="perf-improve.html#cb996-14"></a><span class="co">#&gt; 0.13 0.00 0.12</span></span></code></pre></div>
 <p>Of course, a for loop computes, but doesn’t save the values. We can <code>map_dbl()</code> (Section <a href="functionals.html#map-atomic">9.2.1</a>) to do that. This adds a little overhead:</p>
 <div class="sourceCode" id="cb997"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb997-1"><a href="perf-improve.html#cb997-1"></a>compT &lt;-<span class="st"> </span><span class="cf">function</span>(i){</span>
 <span id="cb997-2"><a href="perf-improve.html#cb997-2"></a>  <span class="kw">t.test</span>(X[i, grp <span class="op">==</span><span class="st"> </span><span class="dv">1</span>], X[i, grp <span class="op">==</span><span class="st"> </span><span class="dv">2</span>])<span class="op">$</span>statistic</span>
 <span id="cb997-3"><a href="perf-improve.html#cb997-3"></a>}</span>
 <span id="cb997-4"><a href="perf-improve.html#cb997-4"></a><span class="kw">system.time</span>(t1 &lt;-<span class="st"> </span>purrr<span class="op">::</span><span class="kw">map_dbl</span>(<span class="dv">1</span><span class="op">:</span>m, compT))</span>
 <span id="cb997-5"><a href="perf-improve.html#cb997-5"></a><span class="co">#&gt; 用户 系统 流逝 </span></span>
-<span id="cb997-6"><a href="perf-improve.html#cb997-6"></a><span class="co">#&gt; 0.12 0.00 0.13</span></span></code></pre></div>
+<span id="cb997-6"><a href="perf-improve.html#cb997-6"></a><span class="co">#&gt; 0.17 0.01 0.19</span></span></code></pre></div>
 <p>How can we make this faster? First, we could try doing less work. If you look at the source code of <code>stats:::t.test.default()</code>, you’ll see that it does a lot more than just compute the t-statistic. It also computes the p-value and formats the output for printing. We can try to make our code faster by stripping out those pieces.</p>
 <div class="sourceCode" id="cb998"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb998-1"><a href="perf-improve.html#cb998-1"></a>my_t &lt;-<span class="st"> </span><span class="cf">function</span>(x, grp) {</span>
 <span id="cb998-2"><a href="perf-improve.html#cb998-2"></a>  t_stat &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</span>
@@ -1292,7 +1292,7 @@ it than the naive <code>sum(x * w)</code>?</p></li>
 <span id="cb999-15"><a href="perf-improve.html#cb999-15"></a>}</span>
 <span id="cb999-16"><a href="perf-improve.html#cb999-16"></a><span class="kw">system.time</span>(t3 &lt;-<span class="st"> </span><span class="kw">rowtstat</span>(X, grp))</span>
 <span id="cb999-17"><a href="perf-improve.html#cb999-17"></a><span class="co">#&gt; 用户 系统 流逝 </span></span>
-<span id="cb999-18"><a href="perf-improve.html#cb999-18"></a><span class="co">#&gt;    0    0    0</span></span>
+<span id="cb999-18"><a href="perf-improve.html#cb999-18"></a><span class="co">#&gt; 0.02 0.00 0.02</span></span>
 <span id="cb999-19"><a href="perf-improve.html#cb999-19"></a><span class="kw">stopifnot</span>(<span class="kw">all.equal</span>(t1, t3))</span></code></pre></div>
 <p>That’s much faster! It’s at least 40 times faster than our previous effort, and around 1000 times faster than where we started.</p>
 <!-- These timing comparisons are not reflected in the code. In the pdf copy this last function takes 0.011 s while the original version takes 0.191 s (about 17 times slower). Maybe there was improvement in the base version of t.test? -->
