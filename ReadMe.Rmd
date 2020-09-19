@@ -5,31 +5,42 @@ output:
   pdf_document: default
   html_document: default
 ---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set( eval = FALSE)
+```
+
 \newpage
 # At the begining
 
-Clone the program (https://github.com/hadley/adv-r). Updating all the package and Software, like Rstudio, Textlive, that I can do. 
+Clone the program (https://github.com/hadley/adv-r). 
+
+Updating all the package and Software, like Rstudio, Texlive, that I can do. 
+
+We generate the gitbook (html version) first, then pdf book.
 
 \newpage
 # gitbook
-For html book, compiling with the code {bookdown::render_book("index.Rmd", "bookdown::gitbook")"}.
+For html book, compiling with the code 
+```{r}
+bookdown::render_book("index.Rmd", "bookdown::gitbook")"
+```
 
 ## Reading problems with "contribute.csv"
 There is no specific error reason about it, but some character cannot be distinguished correct when I saw the error message, such as Chinese Character, French Character, etc.
 
-We can leave it later on, just comment it and auto-solved within the Font problem at the same time.
+The reason is just because the encoding problem. Add a encode parameter in the line 224 of **Introduction.Rmd**, like this:
 
-UPDATE: The reason is just because the encoding problem. Make a encode parameter in the line 224 of *Introduction.Rmd*, like this:
-
-contributors <- read.csv("contributors.csv", stringsAsFactors = FALSE, encoding = "UTF-8")
-
-
+`contributors <- read.csv("contributors.csv", stringsAsFactors = FALSE, encoding = "UTF-8")`
 
 ## For missing packages.
-For majority of the packages, you can use {intall.package()} to install package.
+For majority of the packages, you can use 
+```{r}
+intall.package()
+``` 
+to install package.
 
 ## For missing Fonts.
-Font is quiet different, there are two fonts, Inconsolata, AndaleMono, I missed.
+Font is quiet different, there are two fonts, `Inconsolata`, `AndaleMono`, I missed.
 
 Downloads the Opentype file(.otf), put it into latex folder (C:/texlive/2020/texmf-dist/fonts/opentype/public)
 
@@ -38,43 +49,54 @@ Downloads the Truetype file(.ttf), put it into latex folder  (C:/texlive/2020/te
 ## Cannot install emo and sloop package from CRAN.
 It is because the package are special sources, we need to install the Rtools40 to install it. Code like this
 
-*devtools::install_github("hadley/emo")*
+```{r}
+devtools::install_github("hadley/emo")
+```
 
 ## in system(cmd) "make" not found
 For this error message, just because install Rtools40 via wizard is not enough, we still should type the code
 
-*writeLines('PATH="\$\{RTOOLS40\_HOME\}\\\\usr\\\\bin;\${PATH}"', con = "~/.Renviron")*
+```{r}
+writeLines('PATH="${RTOOLS40_HOME}\\usr\\bin;${PATH}"', con = "~/.Renviron")
+```
 
 ## No such file or directory
-Redirect the folder by Using the following code, It's depends on message content, for me
+Redirect the folder by Using the following code. It's depends on message content, for me
 
-*sh: c:/Rtools/mingw_64/bin/g++: No such file or directory* 
+`sh: c:/Rtools/mingw_64/bin/g++: No such file or directory`
 
-In this case
+In this case, I use
 
-*Sys.setenv(BINPREF = "C:/Rtools/mingw$(WIN)/bin/")
-
-Sys.setenv(PATH = paste("C:/Rtools/bin", Sys.getenv("PATH"), sep=";"))*
+```{r}
+Sys.setenv(BINPREF = "C:/Rtools/mingw$(WIN)/bin/")
+Sys.setenv(PATH = paste("C:/Rtools/bin", Sys.getenv("PATH"), sep=";"))
+```
 
 to redirect.
 
 \newpage
 # pdf_book
-For pdf book, compiling with the code {bookdown::render_book("index.Rmd", "bookdown::pdf_book")"}.
-
+For pdf book, compiling with the code 
+```{r}
+bookdown::render_book("index.Rmd", "bookdown::pdf_book")
+```
 ## LaTeX Error: Environment sidebar undefined.
-LaTeX failed to compile _main.tex. See https://yihui.org/tinytex/r/#debugging for debugging tips. See _main.log for more info.
+Upgrade the rmarkdown through github, cannot directly upgrade via CRAN.
+```{r}
+devtools::install_github('rstudio/rmarkdown')
+```
+and upgrade ALL (use $1^{st}$ option), then all set.
 
-For this error is just because of some deficiency of my textlive software. For this situation, you can find a temp file, which names "_main.tex". 
-
-Compile it with your texlive, compiled with *XeLaTex*, and edit some code, it could get the pdf-version of this book. Actually, don't really know about this method will be worked, just for wishes. Maybe texlive is not enough to have full functional.
-
-But, anyway, we already success to got the *gitbook*, which is good enough to use it by your Browser.
+## Failed to install 'rmarkdown' from GitHub:cannot remove prior installation of package ‘digest’
+This error occurred when I upgrade the rmarkdown.
+Use command
+```{r}
+.libPaths()
+```
+to search the folder path, find 'digest' folder and delete it manipulatively.
 
 \newpage
 # Overall
-Because I forgot I could catch the screen make the error messages more convincible, those things was made by hand. Still has reference value on it.
+As for pdf book generated, there are several warning messages about multiply defined. It may not affect the final book I generated. So, just omit it.
 
-For the result, we can get a good version of Html book, but a half-completed pdf book of it.
-
-The book is compiled in the *gitbook* folder.
+The book is compiled in the "adv-r/_book" folder.
